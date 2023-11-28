@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useUser } from "../../component/UserProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+
 import { Container, Navbar } from "react-bootstrap";
 
 const UserNavBar = ({ onCartCountUpdate }) => {

@@ -94,3 +94,6 @@ body {
 .footer {
   flex-shrink: 0;
 }
+.list-unstyled a {
+  text-decoration: none;
+}

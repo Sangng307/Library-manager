@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
 const Footer = () => {
   return (
@@ -8,12 +8,21 @@ const Footer = () => {
         <Container>
           <Row>
             <Col md={6} sm={12}>
-              <h3>About Us</h3>
-              <p>
-                Your company description goes here. Lorem ipsum dolor sit amet,
-                consectetur adipiscing elit.
-              </p>
-              <Button variant="outline-light">Contact Us</Button>
+              <h3>Hệ thống chi nhánh</h3>
+              <ul className="list-unstyled">
+                <li>
+                  <a href="#home" style={{ textDecoration: "none" }}>
+                    Khu vực miền nam
+                  </a>
+                </li>
+                <li>
+                  <a href="#about">Khu vực miền bắc</a>
+                </li>
+                <li>
+                  <a href="#services">Chính sách bảo hành</a>
+                </li>
+                {/* Add more links */}
+              </ul>
             </Col>
             <Col md={3} sm={6}>
               <h3>Links</h3>
@@ -52,7 +61,7 @@ const Footer = () => {
             <Row>
               <Col>
                 <p className="text-center">
-                  &copy; {new Date().getFullYear()} Your Company. All rights
+                  &copy; {new Date().getFullYear()} My Company. All rights
                   reserved.
                 </p>
               </Col>

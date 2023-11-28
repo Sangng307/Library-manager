@@ -13,7 +13,7 @@ const UserNavBar = () => {
     >
       <Container>
         <Link className="navbar-brand" to="/">
-          Your Brand
+          E-Library
         </Link>
         <Navbar.Toggle aria-controls="navbarNav" />
         <Navbar.Collapse id="navbarNav">

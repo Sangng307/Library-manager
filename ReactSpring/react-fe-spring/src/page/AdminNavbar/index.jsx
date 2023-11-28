@@ -30,7 +30,7 @@ const AdNavbar = () => {
     >
       <Container>
         <Navbar.Brand as={Link} to="/" style={navStyle}>
-          Your Brand
+          E-Library
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
