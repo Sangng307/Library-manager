@@ -127,7 +127,20 @@ function App() {
           <Route path="/adminError" element={<Homepage />} />
           <Route path="book" element={<Book />} />
           <Route path="login" element={<Login />} />
-
+          <Route
+            path="/login"
+            element={
+              role.find((authority) => authority === "") ? (
+                <PrivateRoute>
+                  <Navigate to="/uHadLogin" replace />
+                </PrivateRoute>
+              ) : (
+                <PrivateRoute>
+                  <Login />
+                </PrivateRoute>
+              )
+            }
+          />
           {/* <Route path="admin" element={<Admin />} /> */}
           <Route path="register" element={<Register />} />
           {/* New route for "unotadmin" */}

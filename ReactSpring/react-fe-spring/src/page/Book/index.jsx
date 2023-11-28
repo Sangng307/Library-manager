@@ -9,9 +9,6 @@ import { useUser } from "../../component/UserProvider";
 import { ToastContainer, toast } from "react-toastify";
 import { AnimatePresence, motion } from "framer-motion";
 
-const navStyle = {
-  color: "black",
-};
 const Book = () => {
   const [book, setBook] = useState(null);
   const [originalBook, setOriginalBook] = useState(null);
@@ -262,8 +259,6 @@ const Book = () => {
                     border: "none",
                     padding: "0.5em 1em",
                     borderRadius: "5px",
-                    backgroundColor: "#FFB6C1",
-                    color: "black",
                   }}
                   onClick={handleShowAll}
                 >
@@ -277,8 +272,6 @@ const Book = () => {
                     border: "none",
                     padding: "0.5em 1em",
                     borderRadius: "5px",
-                    backgroundColor: "#FFB6C1",
-                    color: "black",
                   }}
                   onClick={() => handleSort("asc")}
                 >
@@ -291,8 +284,6 @@ const Book = () => {
                     border: "none",
                     padding: "0.5em 1em",
                     borderRadius: "5px",
-                    backgroundColor: "#FFB6C1",
-                    color: "black",
                   }}
                   onClick={() => handleSort("desc")}
                 >

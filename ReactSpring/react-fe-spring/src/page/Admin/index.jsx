@@ -31,6 +31,44 @@ const Admin = () => {
 
   const [categories, setCategories] = useState([]);
 
+  const [nameError, setNameError] = useState("");
+  const [authorError, setAuthorError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+  const [categoryError, setCategorynError] = useState("");
+  const validateInputs = () => {
+    let valid = true;
+
+    if (!selectedCategory) {
+      valid = false;
+      setCategorynError("Chọn thể loại sách");
+    } else {
+      setCategorynError("");
+    }
+
+    if (!selectedBook.name || selectedBook.name.trim() === "") {
+      valid = false;
+      setNameError("Tên sách không được để trống");
+    } else {
+      setNameError("");
+    }
+
+    if (!selectedBook.author || selectedBook.author.trim() === "") {
+      valid = false;
+      setAuthorError("Tên tác giả không được để trống");
+    } else {
+      setAuthorError("");
+    }
+
+    if (!selectedBook.description || selectedBook.description.trim() === "") {
+      valid = false;
+      setDescriptionError("Mô tả sách không được để trống");
+    } else {
+      setDescriptionError("");
+    }
+
+    return valid;
+  };
+
   useEffect(() => {
     // Fetch categories when component mounts
     axios
@@ -62,80 +100,94 @@ const Admin = () => {
     setFilteredBooks(filtered);
   }, [books, searchTerm]);
   const handleEdit = () => {
-    const formData = new FormData();
-    formData.append("imageFile", imageFile);
-    formData.append("name", document.getElementById("formBookName").value);
-    formData.append("category", selectedCategory);
-    formData.append("author", document.getElementById("formBookAuthor").value);
-    formData.append(
-      "description",
-      document.getElementById("formBookDescription").value
-    );
+    const isValid = validateInputs();
 
-    axios
-      .put(`/admin/${selectedBook.id}`, formData, {
-        headers: {
-          Authorization: `Bearer ${user.jwt}`,
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        toast.success("Cập nhật sách thành công !");
-        console.log("Book updated:", response.data);
-        setBooks((prevBooks) =>
-          prevBooks.map((book) =>
-            book.id === selectedBook.id ? response.data : book
-          )
-        );
-      })
-      .catch((error) => {
-        toast.error("Cập nhật sách thất bại !");
-        console.error("Error updating book:", error);
-      });
+    if (isValid) {
+      const formData = new FormData();
+      formData.append("imageFile", imageFile);
+      formData.append("name", document.getElementById("formBookName").value);
+      formData.append("category", selectedCategory);
+      formData.append(
+        "author",
+        document.getElementById("formBookAuthor").value
+      );
+      formData.append(
+        "description",
+        document.getElementById("formBookDescription").value
+      );
+
+      axios
+        .put(`/admin/${selectedBook.id}`, formData, {
+          headers: {
+            Authorization: `Bearer ${user.jwt}`,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          toast.success("Cập nhật sách thành công !");
+          console.log("Book updated:", response.data);
+          setBooks((prevBooks) =>
+            prevBooks.map((book) =>
+              book.id === selectedBook.id ? response.data : book
+            )
+          );
+        })
+        .catch((error) => {
+          toast.error("Cập nhật sách thất bại !");
+          console.error("Error updating book:", error);
+        });
+    }
   };
 
   const handleCreate = () => {
-    const formData = new FormData();
-    formData.append("imageFile", imageFile);
-    formData.append("name", document.getElementById("formBookName").value);
-    formData.append("category", selectedCategory);
-    formData.append("author", document.getElementById("formBookAuthor").value);
-    formData.append(
-      "description",
-      document.getElementById("formBookDescription").value
-    );
+    const isValid = validateInputs();
 
-    axios
-      .post("/admin/create", formData, {
-        headers: {
-          Authorization: `Bearer ${user.jwt}`,
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        toast.success("Thêm mới sách thành công !");
+    if (isValid) {
+      const formData = new FormData();
+      formData.append("imageFile", imageFile);
+      formData.append("name", document.getElementById("formBookName").value);
+      formData.append("category", selectedCategory);
+      formData.append(
+        "author",
+        document.getElementById("formBookAuthor").value
+      );
+      formData.append(
+        "description",
+        document.getElementById("formBookDescription").value
+      );
 
-        axios
-          .get("/api/book", {
-            headers: { Authorization: `Bearer ${user.jwt}` },
-          })
-          .then((response) => {
-            setBooks(response.data);
-            // Clear form fields after creating a new book
-            setSelectedBook({});
-            setInitialSelectedBook({});
-            setImageFile(null);
-            handleReset();
-          })
-          .catch((error) => {
-            toast.error("Error fetching updated book list");
-            console.error("Error fetching updated book list:", error);
-          });
-      })
-      .catch((error) => {
-        toast.error("Lỗi không tạo sách được!");
-        console.error("Error creating book:", error);
-      });
+      axios
+        .post("/admin/create", formData, {
+          headers: {
+            Authorization: `Bearer ${user.jwt}`,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          toast.success("Thêm mới sách thành công !");
+
+          axios
+            .get("/api/book", {
+              headers: { Authorization: `Bearer ${user.jwt}` },
+            })
+            .then((response) => {
+              setBooks(response.data);
+              // Clear form fields after creating a new book
+              setSelectedBook({});
+              setInitialSelectedBook({});
+              setImageFile(null);
+              handleReset();
+            })
+            .catch((error) => {
+              toast.error("Error fetching updated book list");
+              console.error("Error fetching updated book list:", error);
+            });
+        })
+        .catch((error) => {
+          toast.error("Lỗi không tạo sách được!");
+          console.error("Error creating book:", error);
+        });
+    }
   };
 
   const handleFileChange = (event) => {
@@ -252,6 +304,7 @@ const Admin = () => {
                   }
                   onChange={(e) => updateBook("name", e.target.value)}
                 />
+                {nameError && <span style={{ color: "red" }}>{nameError}</span>}
               </Form.Group>
               <Form.Label>Thể loại</Form.Label>
               <Form.Select
@@ -269,6 +322,9 @@ const Admin = () => {
                   </option>
                 ))}
               </Form.Select>
+              {categoryError && (
+                <span style={{ color: "red" }}>{categoryError}</span>
+              )}
               <Form.Group className="mb-3" controlId="formBookAuthor">
                 <Form.Label>Tác Giả</Form.Label>
                 <Form.Control
@@ -279,6 +335,9 @@ const Admin = () => {
                   }
                   onChange={(e) => updateBook("author", e.target.value)}
                 />
+                {authorError && (
+                  <span style={{ color: "red" }}>{authorError}</span>
+                )}
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBookDescription">
                 <Form.Label>Mô Tả Sách</Form.Label>
@@ -291,6 +350,9 @@ const Admin = () => {
                   }
                   onChange={(e) => updateBook("description", e.target.value)}
                 />
+                {descriptionError && (
+                  <span style={{ color: "red" }}>{descriptionError}</span>
+                )}
               </Form.Group>
 
               <Form.Group controlId="formFile" className="mb-3">
