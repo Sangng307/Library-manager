@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Button, Image } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { useUser } from "../../component/UserProvider";
 import axios from "axios";
 
@@ -8,7 +8,9 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const user = useUser();
-
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [loginError, setLoginError] = useState("");
   useEffect(() => {
     const rememberedUser = localStorage.getItem("rememberedUser");
 
@@ -23,35 +25,53 @@ const Login = () => {
   function sendLoginRequest(event) {
     event.preventDefault();
 
-    const reqBody = {
-      username: username,
-      password: password,
-    };
+    // Validation checks
+    let isValid = true;
+    if (!username.trim()) {
+      setUsernameError("Username is required");
+      isValid = false;
+    } else {
+      setUsernameError("");
+    }
+    if (!password.trim()) {
+      setPasswordError("Password is required");
+      isValid = false;
+    } else {
+      setPasswordError("");
+    }
 
-    axios
-      .post("/api/auth/login", reqBody, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          if (rememberMe) {
-            localStorage.setItem("rememberedUser", JSON.stringify(reqBody));
+    if (isValid) {
+      const reqBody = {
+        username: username,
+        password: password,
+      };
+
+      axios
+        .post("/api/auth/login", reqBody, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            if (rememberMe) {
+              localStorage.setItem("rememberedUser", JSON.stringify(reqBody));
+            }
+
+            return Promise.all([response.data, response.headers]);
+          } else {
+            return Promise.reject("Invalid login");
           }
-
-          return Promise.all([response.data, response.headers]);
-        } else {
-          return Promise.reject("Invalid login");
-        }
-      })
-      .then(([body, headers]) => {
-        user.setJwt(headers["authorization"]);
-        redirectToHome();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        })
+        .then(([body, headers]) => {
+          user.setJwt(headers["authorization"]);
+          redirectToHome();
+        })
+        .catch((error) => {
+          console.log(error);
+          setLoginError("Thông tin đăng nhập không chính xác");
+        });
+    }
   }
 
   function redirectToHome() {
@@ -89,6 +109,7 @@ const Login = () => {
                     value={username}
                     onChange={(event) => setUsername(event.target.value)}
                   />
+                  <div className="mb-2 text-danger">{usernameError}</div>
                 </div>
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label">
@@ -102,7 +123,9 @@ const Login = () => {
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                   />
+                  <div className="mb-2 text-danger">{passwordError}</div>
                 </div>
+                <div className="mb-2 text-danger">{loginError}</div>
                 <div className="mb-3 form-check">
                   <input
                     type="checkbox"

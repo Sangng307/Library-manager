@@ -1,47 +1,47 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { useUser } from "../../component/UserProvider";
-import axios from "axios";
 
+import axios from "axios";
+import validator from "validator";
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const user = useUser();
+
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [errorMessageUsername, setErrorMessageUsername] = useState("");
   const [errorMessagePassword, setErrorMessagePassword] = useState("");
   const [errorMessageEmail, setErrorMessageEmail] = useState("");
   function sendRegisterRequest() {
-    // Input validation
-    // if (!username) {
-    //   setErrorMessageUsername("Không được để trống Username.");
-    //   return;
-    // }
-    // if (username.length < 6) {
-    //   setErrorMessageUsername("Username phải trên 6 kí tự.");
-    //   return;
-    // }
-    // if (!password) {
-    //   setErrorMessagePassword("Không được để trống Password.");
-    //   return;
-    // }
-    // if (password.length < 6) {
-    //   setErrorMessagePassword("Password phải trên 6 số.");
-    //   return;
-    // }
+    let hasError = false;
 
-    // if (!email) {
-    //   setErrorMessageEmail("Không được để trống Email.");
-    //   return;
-    // }
-    // const emailRegex = /^[^\s@]+@gmail\.com$/i;
-    // if (!emailRegex.test(email)) {
-    //   setErrorMessageEmail("Email phải đúng định dạng.");
-    //   return;
-    // }
+    if (!validator.isLength(username, { min: 6, max: 20 })) {
+      setErrorMessageUsername("Username must be between 6 and 20 characters.");
+      hasError = true;
+    } else {
+      setErrorMessageUsername("");
+    }
 
+    if (!validator.isLength(password, { min: 6, max: 20 })) {
+      setErrorMessagePassword("Password must be between 6 and 20 characters.");
+      hasError = true;
+    } else {
+      setErrorMessagePassword("");
+    }
+
+    if (!validator.isEmail(email)) {
+      setErrorMessageEmail("Invalid email format.");
+      hasError = true;
+    } else {
+      setErrorMessageEmail("");
+    }
+
+    if (hasError) {
+      // Nếu có lỗi xảy ra, xử lý theo cách phù hợp ở đây
+      // Ví dụ: hiển thị thông báo chung hoặc ngăn ngừa việc tiếp tục
+      return; // hoặc có thể thực hiện hành động phù hợp khác
+    }
     const reqBody = {
       username: username,
       password: password,
