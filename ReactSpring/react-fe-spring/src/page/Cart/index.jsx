@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { useUser } from "../../component/UserProvider";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
-const Cart = () => {
+const Cart = ({}) => {
   const [cartItems, setCartItems] = useState([]);
   const user = useUser();
   const [price, setPrice] = useState();
@@ -37,11 +38,12 @@ const Cart = () => {
             Authorization: `Bearer ${user.jwt}`,
           },
         });
-        console.log(formattedPrice);
+
         setCartItems(response.data);
         const totalPrice = response.data.length * 15000;
         setPrice(totalPrice);
-        // Calculate the total price by summing the default price for each item in the cart
+
+        // Update the count of cart items in the Navbar component
       } catch (error) {
         console.error("Error fetching books in the cart:", error);
       }
@@ -97,8 +99,10 @@ const Cart = () => {
         },
       });
       setCartItems(response.data);
+      toast.success("Đã gửi đăng ký mượn sách!");
     } catch (error) {
       console.error("Error renting items:", error);
+      toast.error("Bạn đang mượn 3 quyển sách!");
     }
   };
 
@@ -123,6 +127,18 @@ const Cart = () => {
 
   return (
     <div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <section className="h-100 h-custom" style={{ backgroundColor: "#eee" }}>
         <Container className="py-5 h-100">
           <Row className="justify-content-center align-items-center h-100">

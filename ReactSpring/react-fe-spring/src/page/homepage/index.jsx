@@ -13,6 +13,36 @@ import { ToastContainer, toast } from "react-toastify";
 const Homepage = () => {
   const [books, setBooks] = useState([]);
   const user = useUser();
+  const [distinctRents, setDistinctRents] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("/admin/rentday", {
+        headers: {
+          Authorization: `Bearer ${user.jwt}`,
+        },
+      })
+      .then((response) => {
+        setDistinctRents(response.data);
+
+        // Compare endDay with today's date
+        response.data.forEach((rent) => {
+          const endDay = new Date(rent.endDay);
+          const today = new Date();
+          const oneDay = 24 * 60 * 60 * 1000; // Milliseconds in a day
+
+          if (endDay < today) {
+            toast.info(`Bạn quá hạn sách ${rent.book.name} rồi!`);
+          } else if (Math.abs(endDay - today) <= oneDay) {
+            toast.info(`Bạn sắp quá hạn sách ${rent.book.name} rồi!`);
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching distinct rents:", error);
+      });
+  }, []);
+
   useEffect(() => {
     axios
       .get("/api/book")
@@ -116,7 +146,12 @@ const Homepage = () => {
                     "CỔ TÍCH-THẦN THOẠI" && (
                     <div
                       key={bookItem.id}
-                      style={{ margin: "5px", padding: "5px" }}
+                      style={{
+                        margin: "5px",
+                        padding: "5px",
+                        display: "flex",
+                        height: "500", // Set a fixed height for each card wrapper
+                      }}
                     >
                       <Card style={{ width: "100%" }}>
                         <Card.Body
@@ -124,7 +159,7 @@ const Homepage = () => {
                             display: "flex",
                             flexDirection: "column",
                             justifyContent: "space-between",
-                            height: "500px",
+                            minHeight: "auto",
                           }}
                         >
                           <Link

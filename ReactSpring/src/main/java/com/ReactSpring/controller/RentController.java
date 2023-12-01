@@ -1,8 +1,10 @@
 package com.ReactSpring.controller;
 
 import com.ReactSpring.entity.Rent;
+import com.ReactSpring.entity.User;
 import com.ReactSpring.repository.RentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
@@ -19,6 +21,12 @@ public class RentController {
     @GetMapping("/rent")
     public List<Rent> getDistinctRentsByUserId() {
         return rentRepository.findDistinctByUserId();
+    }
+
+    @GetMapping("/rentday")
+    public List<Rent> getDistinctRentsByUserIdday(@AuthenticationPrincipal User user) {
+        System.out.println(rentRepository.findDistinctByStatusRentingAndUserId(user.getId()));
+        return rentRepository.findDistinctByStatusRentingAndUserId(user.getId());
     }
 
     @GetMapping("/rentdetail/{userId}")

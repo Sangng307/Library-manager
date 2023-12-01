@@ -24,6 +24,13 @@ public class RentService {
         if (user == null) {
             return false;
         }
+        Long userId = user.getId();
+        // Check if adding the book will exceed the limit
+        Long totalQuantityInCart = rentRepository.countRentingUsersByUserId(userId);
+
+        if (totalQuantityInCart >= 3) {
+            return false;
+        }
 
         for (Long itemId : itemIds) {
             Book book = bookRepository.findById(itemId).orElse(null);

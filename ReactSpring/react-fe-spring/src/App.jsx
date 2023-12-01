@@ -23,14 +23,11 @@ import Cart from "./page/Cart";
 import Category from "./page/Category";
 import Rent from "./page/Rent";
 import RentDetail from "./page/RentDetail";
+import axios from "axios";
 
 function App() {
   const user = useUser();
   const [role, setRole] = useState(getRoleFromJWT(user.jwt));
-
-  useEffect(() => {
-    setRole(getRoleFromJWT(user.jwt));
-  }, [user.jwt]);
 
   function getRoleFromJWT(jwt) {
     if (jwt) {

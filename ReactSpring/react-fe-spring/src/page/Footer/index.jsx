@@ -11,9 +11,7 @@ const Footer = () => {
               <h3>Hệ thống chi nhánh</h3>
               <ul className="list-unstyled">
                 <li>
-                  <a href="#home" style={{ textDecoration: "none" }}>
-                    Khu vực miền nam
-                  </a>
+                  <a href="#home">Khu vực miền nam</a>
                 </li>
                 <li>
                   <a href="#about">Khu vực miền bắc</a>

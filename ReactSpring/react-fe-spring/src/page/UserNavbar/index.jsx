@@ -6,7 +6,7 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 import { Container, Navbar } from "react-bootstrap";
 
-const UserNavBar = ({ onCartCountUpdate }) => {
+const UserNavBar = ({}) => {
   const user = useUser();
   // const [count, setCount] = useState(0);
 
@@ -24,7 +24,7 @@ const UserNavBar = ({ onCartCountUpdate }) => {
     >
       <Container>
         <Link className="navbar-brand" to="/">
-          Your Brand
+          E-Library
         </Link>
         <Navbar.Toggle aria-controls="navbarNav" />
         <Navbar.Collapse id="navbarNav">

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { Container, Navbar } from "react-bootstrap";
 
-const UserNavBar = () => {
+const NavBar = () => {
   return (
     <Navbar
       sticky="top"
@@ -47,4 +47,4 @@ const UserNavBar = () => {
   );
 };
 
-export default UserNavBar;
+export default NavBar;

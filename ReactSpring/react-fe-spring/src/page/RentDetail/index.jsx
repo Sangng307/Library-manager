@@ -90,6 +90,12 @@ const RentDetail = () => {
       />
       <Container>
         <h3>Chờ xác nhận</h3>
+        {rentData.length > 0 && (
+          <div>
+            <h5>Username user: {rentData[0].user.username}</h5>
+            {/* Rest of your code */}
+          </div>
+        )}
         {rentData.length > 0 ? (
           <div>
             <Table striped bordered hover>

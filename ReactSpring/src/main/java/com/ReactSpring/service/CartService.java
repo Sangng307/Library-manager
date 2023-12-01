@@ -6,6 +6,7 @@ import com.ReactSpring.entity.Cart;
 import com.ReactSpring.entity.User;
 import com.ReactSpring.repository.BookRepository;
 import com.ReactSpring.repository.CartRepository;
+import com.ReactSpring.repository.RentRepository;
 import com.ReactSpring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,9 @@ public class CartService {
     CartRepository cartRepository;
 
     @Autowired
+    RentRepository rentRepository;
+
+    @Autowired
     private BookRepository bookRepository;
 
     @Autowired
@@ -31,8 +35,9 @@ public class CartService {
         Long userId = user.getId();
 
         // Check if adding the book will exceed the limit
-        Integer totalQuantityInCart = cartRepository.getTotalQuantityInCartByUserId(userId);
-        if (totalQuantityInCart > 2) {
+        Long totalQuantityInCart = rentRepository.countRentingUsersByUserId(userId);
+        System.out.println(totalQuantityInCart);
+        if (totalQuantityInCart >= 3) {
             // You can throw an exception or handle the case where the limit is exceeded
             throw new RuntimeException("You can't add more than 3 books to the cart.");
         }
