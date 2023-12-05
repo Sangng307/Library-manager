@@ -127,7 +127,7 @@ const Register = () => {
                   variant="primary"
                   onClick={() => sendRegisterRequest()}
                 >
-                  Register
+                  Đăng ký
                 </Button>
                 <Button
                   id="submit"
@@ -136,7 +136,7 @@ const Register = () => {
                     window.location.href = "/login";
                   }}
                 >
-                  Login
+                  Đăng nhập
                 </Button>
               </div>
             </form>

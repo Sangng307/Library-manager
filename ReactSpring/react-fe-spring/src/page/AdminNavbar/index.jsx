@@ -36,11 +36,11 @@ const AdNavbar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/" style={navStyle}>
-              Home
+              Trang chủ
             </Nav.Link>
 
             <Nav.Link as={Link} to="/book" style={navStyle}>
-              Book
+              Sách
             </Nav.Link>
           </Nav>
           <ul className="navbar-nav">
@@ -49,19 +49,23 @@ const AdNavbar = () => {
               style={{ cursor: "pointer" }}
               onClick={handleLogout}
             >
-              Logout
+              Đăng xuất
             </li>
           </ul>
           <Nav>
-            <NavDropdown title="Admin tool" id="basic-nav-dropdown" align="end">
+            <NavDropdown
+              title="Quản lý admin"
+              id="basic-nav-dropdown"
+              align="end"
+            >
               <NavDropdown.Item as={Link} to="/admin" style={navStyle}>
-                Book manager
+                Quản lý sách
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/category" style={navStyle}>
-                Category manager
+                Quản lý thể loại
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/rent" style={navStyle}>
-                Rent manager
+                Quản lý thuê sách
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>

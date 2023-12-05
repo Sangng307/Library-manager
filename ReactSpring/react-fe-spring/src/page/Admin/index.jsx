@@ -72,7 +72,9 @@ const Admin = () => {
   useEffect(() => {
     // Fetch categories when component mounts
     axios
-      .get("/admin/categories")
+      .get("/admin/categories", {
+        headers: { Authorization: `Bearer ${user.jwt}` },
+      })
       .then((response) => {
         setCategories(response.data);
       })
@@ -83,7 +85,7 @@ const Admin = () => {
 
   useEffect(() => {
     axios
-      .get("/api/book", { headers: { Authorization: `Bearer ${user.jwt}` } })
+      .get("/admin/book", { headers: { Authorization: `Bearer ${user.jwt}` } })
       .then((response) => {
         setBooks(response.data);
       })
@@ -364,7 +366,7 @@ const Admin = () => {
                 />
               </Form.Group>
               <Button style={{ marginRight: "10px" }} onClick={handleCreate}>
-                Create
+                Tạo mới
               </Button>
               <Button
                 style={{ marginRight: "10px" }}
@@ -372,14 +374,14 @@ const Admin = () => {
                 type="button"
                 onClick={handleEdit}
               >
-                Update
+                Cập nhật
               </Button>
 
               <Button variant="primary" type="button" onClick={handleReset}>
-                Resest
+                Đặt lại
               </Button>
               <Form.Group controlId="formSearch" className="mb-3">
-                <Form.Label>Sreach</Form.Label>
+                <Form.Label>Tìm</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Nhập tên hoặc thể loại sách để tìm kiếm"
@@ -434,7 +436,7 @@ const Admin = () => {
                         setSelectedCategory(book.category.id);
                       }}
                     >
-                      Edit
+                      Quản lý
                     </Button>
                     <Button
                       variant="danger"
@@ -442,7 +444,7 @@ const Admin = () => {
                         handleDelete(book.id);
                       }}
                     >
-                      Delete
+                      Xoá
                     </Button>
                   </td>
                 </tr>
@@ -454,7 +456,7 @@ const Admin = () => {
         <ul className="pagination d-flex justify-content-center">
           <li className="page-item">
             <button className="page-link" type="button" onClick={prevPage}>
-              Previous
+              Trang trước
             </button>
           </li>
           {Array.from({ length: endPage - startPage + 1 }, (_, index) => (
@@ -477,7 +479,7 @@ const Admin = () => {
           ))}
           <li className="page-item">
             <button className="page-link" type="button" onClick={nextPage}>
-              Next
+              Trang sau
             </button>
           </li>
         </ul>

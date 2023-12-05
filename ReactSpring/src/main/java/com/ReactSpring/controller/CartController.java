@@ -2,8 +2,10 @@ package com.ReactSpring.controller;
 
 import com.ReactSpring.entity.Book;
 import com.ReactSpring.entity.Cart;
+import com.ReactSpring.entity.Rent;
 import com.ReactSpring.entity.User;
 import com.ReactSpring.repository.CartRepository;
+import com.ReactSpring.repository.RentRepository;
 import com.ReactSpring.service.CartService;
 import com.ReactSpring.service.RentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class CartController {
     private CartRepository cartRepository;
     @Autowired
     private RentService rentService;
+    @Autowired
+    private RentRepository rentRepository;
     @PostMapping("/addcart")
     public ResponseEntity<?> getAssignment(@AuthenticationPrincipal User user, @RequestBody Book book){
         Cart cartByUser = cartService.save(user,book);
@@ -75,5 +79,11 @@ public class CartController {
         } else {
             return ResponseEntity.badRequest().body("User not authenticated.");
         }
+    }
+
+    @GetMapping("/rentday")
+    public List<Rent> getDistinctRentsByUserIdday(@AuthenticationPrincipal User user) {
+        System.out.println(rentRepository.findDistinctByStatusRentingAndUserId(user.getId()));
+        return rentRepository.findDistinctByStatusRentingAndUserId(user.getId());
     }
 }

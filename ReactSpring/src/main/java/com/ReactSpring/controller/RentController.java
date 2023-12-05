@@ -29,6 +29,11 @@ public class RentController {
         return rentRepository.findDistinctByStatusRentingAndUserId(user.getId());
     }
 
+    @GetMapping("/rentdayadmin")
+    public List<Rent> getDistinctRentsByUserIddayAdmin() {
+        System.out.println(rentRepository.findDistinctByStatusRentingAndUserIdAdmin());
+        return rentRepository.findDistinctByStatusRentingAndUserIdAdmin();
+    }
     @GetMapping("/rentdetail/{userId}")
     public List<Rent> getByUserId(@PathVariable Long userId) {
         return rentRepository.findByUserId(userId);

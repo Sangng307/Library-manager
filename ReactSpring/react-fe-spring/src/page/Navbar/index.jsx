@@ -20,24 +20,24 @@ const NavBar = () => {
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
               <Link className="nav-link" to="/">
-                Home
+                Trang chủ
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/book">
-                Book
+                Sách
               </Link>
             </li>
           </ul>
           <ul className="navbar-nav">
             <li className="nav-item">
               <Link className="nav-link" to="/login">
-                Login
+                Đăng nhập
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/register">
-                Register
+                Đăng ký
               </Link>
             </li>
           </ul>

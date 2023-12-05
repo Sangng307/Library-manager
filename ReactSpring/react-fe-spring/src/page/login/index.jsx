@@ -11,16 +11,16 @@ const Login = () => {
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loginError, setLoginError] = useState("");
-  useEffect(() => {
-    const rememberedUser = localStorage.getItem("rememberedUser");
+  // useEffect(() => {
+  //   const rememberedUser = localStorage.getItem("rememberedUser");
 
-    if (rememberedUser) {
-      const user = JSON.parse(rememberedUser);
-      setUsername(user.username);
-      setPassword(user.password);
-      setRememberMe(true);
-    }
-  }, []);
+  //   if (rememberedUser) {
+  //     const user = JSON.parse(rememberedUser);
+  //     setUsername(user.username);
+  //     setPassword(user.password);
+  //     setRememberMe(true);
+  //   }
+  // }, []);
 
   function sendLoginRequest(event) {
     event.preventDefault();
@@ -126,7 +126,7 @@ const Login = () => {
                   <div className="mb-2 text-danger">{passwordError}</div>
                 </div>
                 <div className="mb-2 text-danger">{loginError}</div>
-                <div className="mb-3 form-check">
+                {/* <div className="mb-3 form-check">
                   <input
                     type="checkbox"
                     className="form-check-input"
@@ -135,12 +135,12 @@ const Login = () => {
                     onChange={(e) => setRememberMe(e.target.checked)}
                   />
                   <label className="form-check-label" htmlFor="rememberMe">
-                    Remember Me
+                    Nhớ thông tin?
                   </label>
-                </div>
+                </div> */}
                 <div className="d-flex flex-column flex-md-row justify-content-md-end gap-3">
                   <Button variant="primary" type="submit">
-                    Login
+                    Đăng nhập
                   </Button>
                   <Button
                     variant="secondary"
@@ -148,7 +148,7 @@ const Login = () => {
                       redirectToHome();
                     }}
                   >
-                    Back
+                    Quay lại
                   </Button>
                 </div>
               </form>

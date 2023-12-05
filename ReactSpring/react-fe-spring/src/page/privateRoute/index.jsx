@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Route } from "react-router-dom";
 import axios from "axios";
 import { useUser } from "../../component/UserProvider";
 import { motion } from "framer-motion";
+import Login from "../login";
 const PrivateRoute = (props) => {
   const user = useUser();
   const { children } = props;
 
   const [isLoading, setIsLoading] = useState(true);
   const [isValid, setIsValid] = useState(null);
-
+  <Route path="/loginError" element={<Login />} />;
   useEffect(() => {
     if (user) {
       axios
@@ -31,7 +32,7 @@ const PrivateRoute = (props) => {
   }, [user]);
 
   if (!user) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/loginError" replace />;
   }
 
   return isLoading ? (
@@ -53,7 +54,7 @@ const PrivateRoute = (props) => {
   ) : isValid === true ? (
     <>{children}</>
   ) : (
-    <Navigate to="/login" />
+    <Navigate to="/loginError" replace />
   );
 };
 

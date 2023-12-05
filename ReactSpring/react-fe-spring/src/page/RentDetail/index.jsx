@@ -2,11 +2,13 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Badge, Button, Container, Form, Table } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
+import { useUser } from "../../component/UserProvider";
 
 const RentDetail = () => {
   const [rentData, setRentData] = useState([]);
   const [userId, setUserId] = useState(null);
   const [error, setError] = useState(null);
+  const user = useUser();
   const handleStatusChange = (rentId, selectedValue) => {
     const updatedRentData = rentData.map((rent) => {
       if (rent.id === rentId) {
@@ -27,12 +29,17 @@ const RentDetail = () => {
         const userIdFromUrl = urlParts[urlParts.length - 1];
         setUserId(userIdFromUrl);
 
-        const response = await axios.get(`/admin/rentdetail/${userIdFromUrl}`);
+        const response = await axios.get(`/admin/rentdetail/${userIdFromUrl}`, {
+          headers: {
+            Authorization: `Bearer ${user.jwt}`,
+          },
+        });
         if (response.status !== 200) {
           throw new Error("Network response was not ok.");
         }
 
-        setRentData(response.data); // Set the rent data state with the fetched data
+        setRentData(response.data);
+        console.log(response.data); // Set the rent data state with the fetched data
       } catch (error) {
         setError(error.message || "Error fetching rent data.");
       }
@@ -47,7 +54,11 @@ const RentDetail = () => {
 
   const saveRentStatuses = async () => {
     try {
-      const response = await axios.put("/admin/saveRentStatus", rentData);
+      const response = await axios.put("/admin/saveRentStatus", rentData, {
+        headers: {
+          Authorization: `Bearer ${user.jwt}`,
+        },
+      });
       toast.success("Cập nhật trạng tái thành công !");
       // Handle success response
       console.log("Rent statuses updated successfully", response.data);
@@ -89,6 +100,10 @@ const RentDetail = () => {
         theme="light"
       />
       <Container>
+        <div style={{ textAlign: "center" }}>
+          <h2>Quản lý sách thuê</h2>
+        </div>
+
         <h3>Chờ xác nhận</h3>
         {rentData.length > 0 && (
           <div>
@@ -159,7 +174,11 @@ const RentDetail = () => {
                       <td>{rent.book.name}</td>
                       <td>{rent.book.id}</td>
                       <td>
-                        <Badge>{rent.status}</Badge>
+                        {rent.status === "PENDING" && (
+                          <Badge>
+                            {rent.status === "PENDING" ? "Chờ xác nhận" : null}
+                          </Badge>
+                        )}
                       </td>
                       {/* Add other table cells for additional details */}
                     </tr>
@@ -191,7 +210,11 @@ const RentDetail = () => {
                       <td>{formatDate(rent.startDay)}</td>
                       <td>{formatDateEnd(rent.endDay)}</td>
                       <td>
-                        <Badge bg="success">{rent.status}</Badge>
+                        {rent.status === "RENTING" && (
+                          <Badge bg="success">
+                            {rent.status === "RENTING" ? "Đang thuê" : null}
+                          </Badge>
+                        )}
                       </td>
                       {/* Add other table cells for additional details */}
                     </tr>
@@ -218,7 +241,11 @@ const RentDetail = () => {
                       <td>{rent.book.name}</td>
                       <td>{rent.book.id}</td>
                       <td>
-                        <Badge bg="info">{rent.status}</Badge>
+                        {rent.status === "DONE" && (
+                          <Badge bg="info">
+                            {rent.status === "DONE" ? "Hoàn thành" : null}
+                          </Badge>
+                        )}
                       </td>
                       {/* Add other table cells for additional details */}
                     </tr>
@@ -245,7 +272,11 @@ const RentDetail = () => {
                       <td>{rent.book.name}</td>
                       <td>{rent.book.id}</td>
                       <td>
-                        <Badge bg="danger">{rent.status}</Badge>
+                        {rent.status === "DENIED" && (
+                          <Badge bg="danger">
+                            {rent.status === "DENIED" ? "Từ chối" : null}
+                          </Badge>
+                        )}
                       </td>
                       {/* Add other table cells for additional details */}
                     </tr>

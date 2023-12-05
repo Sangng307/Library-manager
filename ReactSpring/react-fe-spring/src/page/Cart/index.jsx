@@ -152,11 +152,9 @@ const Cart = ({}) => {
                     <Col lg="8">
                       <div className="p-5">
                         <div className="d-flex justify-content-between align-items-center mb-5">
-                          <h1 className="fw-bold mb-0 text-black">
-                            Shopping Cart
-                          </h1>
+                          <h1 className="fw-bold mb-0 text-black">Giỏ hàng</h1>
                           <p className="mb-0 text-muted">
-                            {cartItems.length} items
+                            {cartItems.length} quyển sách
                           </p>
                         </div>
 
@@ -197,7 +195,7 @@ const Cart = ({}) => {
                         ))}
                         <div className="d-flex justify-content-end align-items-end">
                           <Button onClick={handleDeleteAllItems}>
-                            Delete All
+                            Xoá tất cả
                           </Button>
                         </div>
                       </div>

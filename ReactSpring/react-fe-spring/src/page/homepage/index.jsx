@@ -17,7 +17,7 @@ const Homepage = () => {
 
   useEffect(() => {
     axios
-      .get("/admin/rentday", {
+      .get("/user/rentday", {
         headers: {
           Authorization: `Bearer ${user.jwt}`,
         },
@@ -184,10 +184,10 @@ const Homepage = () => {
                           </Card.Subtitle>
                           <div style={{ flex: 1 }}>
                             <p>
-                              <b>Category:</b> {bookItem.category.name}
+                              <b>Thể loại:</b> {bookItem.category.name}
                             </p>
                             <p>
-                              <b>Description:</b> {bookItem.description}
+                              <b>Mô tả:</b> {bookItem.description}
                             </p>
                           </div>
                           {user.jwt && (
@@ -260,10 +260,10 @@ const Homepage = () => {
                           </Card.Subtitle>
                           <div style={{ flex: 1 }}>
                             <p>
-                              <b>Category:</b> {bookItem.category.name}
+                              <b>Thể loại:</b> {bookItem.category.name}
                             </p>
                             <p>
-                              <b>Description:</b> {bookItem.description}
+                              <b>Mô tả:</b> {bookItem.description}
                             </p>
                           </div>
                           {user.jwt && (

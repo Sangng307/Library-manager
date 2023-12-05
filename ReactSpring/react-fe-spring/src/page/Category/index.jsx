@@ -20,7 +20,11 @@ const Category = () => {
         });
         setCategories(response.data);
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        if (error.response && error.response.status === 403) {
+          window.location.href = "http://localhost:3000/"; // Redirect in React for unauthorized access
+        } else {
+          console.error("Error fetching categories:", error);
+        }
       }
     };
 
@@ -106,7 +110,7 @@ const Category = () => {
       <Container>
         <Form>
           <Form.Group controlId="formCategoryName">
-            <Form.Label>Add Category</Form.Label>
+            <Form.Label>Thêm tác giả</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter category name"
@@ -119,7 +123,7 @@ const Category = () => {
             variant="primary"
             onClick={addCategory}
           >
-            Add
+            Them mới
           </Button>
         </Form>
         <h2>Categories</h2>
@@ -127,7 +131,7 @@ const Category = () => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Name</th>
+              <th>Tên</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -154,14 +158,14 @@ const Category = () => {
                         variant="success"
                         onClick={() => handleSaveEdit(category.id)}
                       >
-                        Save
+                        Lưu
                       </Button>{" "}
                       <Button
                         style={{ marginRight: "10px" }}
                         variant="secondary"
                         onClick={handleCancelEdit}
                       >
-                        Cancel
+                        Huỷ
                       </Button>
                     </>
                   ) : (
@@ -170,14 +174,14 @@ const Category = () => {
                       variant="info"
                       onClick={() => handleEdit(category.id, category.name)}
                     >
-                      Edit
+                      Chỉnh sửa
                     </Button>
                   )}
                   <Button
                     variant="danger"
                     onClick={() => handleDelete(category.id)}
                   >
-                    Delete
+                    Xoá
                   </Button>
                 </td>
               </tr>

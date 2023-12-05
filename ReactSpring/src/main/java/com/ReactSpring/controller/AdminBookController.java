@@ -33,7 +33,7 @@ public class AdminBookController {
         return ResponseEntity.ok(books);
     }
     @GetMapping("/categories")
-    public ResponseEntity<List<Category>> getAllCategories() {
+    public ResponseEntity<List<Category>> getAllCategories(@AuthenticationPrincipal User user) {
         List<Category> categories = categoryRepository.findAll();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }

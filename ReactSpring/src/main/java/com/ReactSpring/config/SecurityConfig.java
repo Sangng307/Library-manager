@@ -69,11 +69,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 }).and();
 
         http.authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .antMatchers("/pay").permitAll()
+                .antMatchers("/api/**").permitAll()
+                .antMatchers("/pay","/user/**").hasAuthority(AuthorityEnum.ROLE_USER.name())
                 .antMatchers("/admin/**").hasAuthority(AuthorityEnum.ROLE_ADMIN.name())
                 .anyRequest().authenticated()
-                .and().formLogin().loginPage("/homepage");
+                .and().formLogin().loginPage("/homepage").and();
+
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -26,13 +26,13 @@ const Footer = () => {
               <h3>Links</h3>
               <ul className="list-unstyled">
                 <li>
-                  <a href="#home">Home</a>
+                  <a href="#home">Trang chủ</a>
                 </li>
                 <li>
-                  <a href="#about">About</a>
+                  <a href="#about">Về thư viện</a>
                 </li>
                 <li>
-                  <a href="#services">Services</a>
+                  <a href="#services">Các dịch vụ</a>
                 </li>
                 {/* Add more links */}
               </ul>

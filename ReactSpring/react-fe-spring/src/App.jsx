@@ -23,7 +23,7 @@ import Cart from "./page/Cart";
 import Category from "./page/Category";
 import Rent from "./page/Rent";
 import RentDetail from "./page/RentDetail";
-import axios from "axios";
+import RentUser from "./page/rentUser";
 
 function App() {
   const user = useUser();
@@ -107,6 +107,20 @@ function App() {
             }
           />
           <Route
+            path="/userRent"
+            element={
+              role.find((authority) => authority === "ROLE_USER") ? (
+                <PrivateRoute>
+                  <RentUser />
+                </PrivateRoute>
+              ) : (
+                <PrivateRoute>
+                  <Navigate to="/adminError" replace />
+                </PrivateRoute>
+              )
+            }
+          />
+          <Route
             path="/rentdetail/:id"
             element={
               role.find((authority) => authority === "ROLE_ADMIN") ? (
@@ -120,6 +134,7 @@ function App() {
               )
             }
           />
+          <Route path="/loginError" element={<Login />} />;
           <Route path="/userError" element={<Homepage />} />
           <Route path="/adminError" element={<Homepage />} />
           <Route path="book" element={<Book />} />
@@ -129,11 +144,11 @@ function App() {
             element={
               role.find((authority) => authority === "") ? (
                 <PrivateRoute>
-                  <Navigate to="/uHadLogin" replace />
+                  <Login />
                 </PrivateRoute>
               ) : (
                 <PrivateRoute>
-                  <Login />
+                  <Navigate to="/uHadLogin" replace />
                 </PrivateRoute>
               )
             }

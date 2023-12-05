@@ -142,7 +142,7 @@ const Book = () => {
               }}
             >
               <h2 className="text-center" style={{ color: "#FFB6C1" }}>
-                Filter
+                Lọc
               </h2>
               <ul
                 className="animated-list"
@@ -169,7 +169,7 @@ const Book = () => {
                       cursor: "pointer",
                     }}
                   >
-                    Authors
+                    Tác giả
                   </motion.h2>
                   <AnimatePresence>
                     {showAuthors && (
@@ -215,7 +215,7 @@ const Book = () => {
                       cursor: "pointer",
                     }}
                   >
-                    Categories
+                    Thể loại
                   </motion.h2>
                   <AnimatePresence>
                     {showCategories && (
@@ -262,7 +262,7 @@ const Book = () => {
                   }}
                   onClick={handleShowAll}
                 >
-                  Show All
+                  Hiện tất cả
                 </Button>
                 <Button
                   style={{
@@ -329,10 +329,10 @@ const Book = () => {
                             </Card.Subtitle>
                             <div style={{ flex: 1 }}>
                               <p>
-                                <b>Category:</b> {bookItem.category.name}
+                                <b>Thể loại:</b> {bookItem.category.name}
                               </p>
                               <p>
-                                <b>Description:</b> {bookItem.description}
+                                <b>Mô tả:</b> {bookItem.description}
                               </p>
                             </div>
                             {user.jwt && (
@@ -408,10 +408,10 @@ const Book = () => {
                             </Card.Subtitle>
                             <div style={{ flex: 1 }}>
                               <p>
-                                <b>Category:</b> {bookItem.category.name}
+                                <b>Thể loại:</b> {bookItem.category.name}
                               </p>
                               <p>
-                                <b>Description:</b> {bookItem.description}
+                                <b>Mô tả:</b> {bookItem.description}
                               </p>
                             </div>
                             {user.jwt && (
