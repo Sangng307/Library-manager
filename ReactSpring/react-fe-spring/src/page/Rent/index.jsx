@@ -96,7 +96,7 @@ const Rent = () => {
           </tbody>
         </Table>
         <div>
-          <h2>Outdated Rents</h2>
+          <h2>Quá hạn thuê</h2>
           <Table striped bordered hover>
             <thead>
               <tr>

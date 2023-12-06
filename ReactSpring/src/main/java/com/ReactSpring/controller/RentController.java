@@ -57,7 +57,7 @@ public class RentController {
 
         // Update each Rent object with the start and end dates
         for (Rent rent : rentData) {
-            if(rent.getStatus().equals("RENTING")) {
+            if(rent.getStartDay() == null && rent.getEndDay() == null && rent.getStatus().equals("RENTING")) {
                 rent.setStartDay(startDay);
                 rent.setEndDay(endDay);
 

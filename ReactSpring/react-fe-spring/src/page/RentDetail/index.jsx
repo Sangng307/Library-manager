@@ -9,6 +9,7 @@ const RentDetail = () => {
   const [userId, setUserId] = useState(null);
   const [error, setError] = useState(null);
   const user = useUser();
+  const today = new Date();
   const handleStatusChange = (rentId, selectedValue) => {
     const updatedRentData = rentData.map((rent) => {
       if (rent.id === rentId) {
@@ -21,36 +22,32 @@ const RentDetail = () => {
     console.log(rentData);
   };
 
-  useEffect(() => {
-    const fetchRentData = async () => {
-      try {
-        const currentUrl = window.location.href;
-        const urlParts = currentUrl.split("/");
-        const userIdFromUrl = urlParts[urlParts.length - 1];
-        setUserId(userIdFromUrl);
+  const fetchRentData = async () => {
+    try {
+      const currentUrl = window.location.href;
+      const urlParts = currentUrl.split("/");
+      const userIdFromUrl = urlParts[urlParts.length - 1];
+      setUserId(userIdFromUrl);
 
-        const response = await axios.get(`/admin/rentdetail/${userIdFromUrl}`, {
-          headers: {
-            Authorization: `Bearer ${user.jwt}`,
-          },
-        });
-        if (response.status !== 200) {
-          throw new Error("Network response was not ok.");
-        }
-
-        setRentData(response.data);
-        console.log(response.data); // Set the rent data state with the fetched data
-      } catch (error) {
-        setError(error.message || "Error fetching rent data.");
+      const response = await axios.get(`/admin/rentdetail/${userIdFromUrl}`, {
+        headers: {
+          Authorization: `Bearer ${user.jwt}`,
+        },
+      });
+      if (response.status !== 200) {
+        throw new Error("Network response was not ok.");
       }
-    };
 
+      setRentData(response.data);
+      console.log(response.data); // Set the rent data state with the fetched data
+    } catch (error) {
+      setError(error.message || "Error fetching rent data.");
+    }
+  };
+
+  useEffect(() => {
     fetchRentData();
-  }, []);
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  }, [user.jwt]);
 
   const saveRentStatuses = async () => {
     try {
@@ -60,29 +57,48 @@ const RentDetail = () => {
         },
       });
       toast.success("Cập nhật trạng tái thành công !");
-      // Handle success response
       console.log("Rent statuses updated successfully", response.data);
+
+      // Reload rent data after saving statuses
+      await fetchRentData();
     } catch (error) {
       setError(error.message || "Error saving rent statuses.");
       toast.error("Cập nhật trạng tái thất bại !");
     }
   };
 
-  const formatDate = () => {
-    const date = new Date();
+  const formatDate = (dateString) => {
+    if (!dateString) {
+      const today = new Date();
+      const day = today.getDate().toString().padStart(2, "0");
+      const month = (today.getMonth() + 1).toString().padStart(2, "0");
+      const year = today.getFullYear();
+      return `${day}-${month}-${year}`;
+    }
+
+    const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, "0");
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
-  const formatDateEnd = () => {
-    const currentDate = new Date();
-    const date = new Date();
-    date.setDate(currentDate.getDate() + 7); // Adding 7 days to the current date
+
+  const formatDateEnd = (dateString) => {
+    if (!dateString) {
+      const today = new Date();
+      today.setDate(today.getDate() + 7); // Adding 7 days to today's date
+      const day = today.getDate().toString().padStart(2, "0");
+      const month = (today.getMonth() + 1).toString().padStart(2, "0");
+      const year = today.getFullYear();
+      return `${day}-${month}-${year}`;
+    }
+
+    const currentDate = new Date(dateString);
+    const date = new Date(currentDate);
+    date.setDate(currentDate.getDate()); // Keeping the same date
     const day = date.getDate().toString().padStart(2, "0");
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const year = date.getFullYear();
-
     return `${day}-${month}-${year}`;
   };
   return (
@@ -252,7 +268,7 @@ const RentDetail = () => {
                   ))}
               </tbody>
             </Table>
-            <h3>Từ chối</h3>
+            <h3>Quá hạn</h3>
             <Table striped bordered hover>
               <thead>
                 <tr>
@@ -265,18 +281,17 @@ const RentDetail = () => {
               </thead>
               <tbody>
                 {rentData
-                  .filter((rent) => rent.status === "DENIED")
+                  .filter(
+                    (rent) =>
+                      new Date(rent.endDay) < today && rent.status === "RENTING"
+                  ) // Filter based on endDay < today and rent.status != "DONE"
                   .map((rent) => (
                     <tr key={rent.id}>
                       <td>{rent.id}</td>
                       <td>{rent.book.name}</td>
                       <td>{rent.book.id}</td>
                       <td>
-                        {rent.status === "DENIED" && (
-                          <Badge bg="danger">
-                            {rent.status === "DENIED" ? "Từ chối" : null}
-                          </Badge>
-                        )}
+                        <Badge bg="danger">Quá hạn</Badge>
                       </td>
                       {/* Add other table cells for additional details */}
                     </tr>
