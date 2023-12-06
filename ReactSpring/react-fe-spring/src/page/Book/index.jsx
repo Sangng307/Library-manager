@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,8 +10,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Book = () => {
-  const [book, setBook] = useState(null);
-  const [originalBook, setOriginalBook] = useState(null);
+  const [book, setBook] = useState([]);
+  const [originalBook, setOriginalBook] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [filterByAuthor, setFilterByAuthor] = useState(false);
   const [selectedAuthor, setSelectedAuthor] = useState("");
@@ -22,7 +22,7 @@ const Book = () => {
   const user = useUser();
   const [sortedCurrentBooks, setSortedCurrentBooks] = useState(null);
   const [sorted, setSorted] = useState(false);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const handleAddToCart = (selectedBook) => {
     axios
       .post("/user/addcart", selectedBook, {
@@ -117,6 +117,13 @@ const Book = () => {
     setCurrentPage(selected);
   };
 
+  useEffect(() => {
+    // Filter books based on search term
+    const filtered = originalBook.filter((book) =>
+      book.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setBook(filtered); // Update the 'book' state with filtered results
+  }, [searchTerm, originalBook]);
   return (
     <>
       <Container>
@@ -250,46 +257,64 @@ const Book = () => {
               </ul>
             </div>
             <div style={{ flex: 4, padding: "0 1em" }}>
-              <div style={{ display: "flex", marginBottom: "1em" }}>
-                <Button
-                  style={{
-                    marginRight: "1em",
-                    backgroundColor: "#FFB6C1",
-                    color: "white",
-                    border: "none",
-                    padding: "0.5em 1em",
-                    borderRadius: "5px",
-                  }}
-                  onClick={handleShowAll}
-                >
-                  Hiện tất cả
-                </Button>
-                <Button
-                  style={{
-                    marginRight: "1em",
-                    backgroundColor: "#FFB6C1",
-                    color: "white",
-                    border: "none",
-                    padding: "0.5em 1em",
-                    borderRadius: "5px",
-                  }}
-                  onClick={() => handleSort("asc")}
-                >
-                  A-Z
-                </Button>
-                <Button
-                  style={{
-                    backgroundColor: "#FFB6C1",
-                    color: "white",
-                    border: "none",
-                    padding: "0.5em 1em",
-                    borderRadius: "5px",
-                  }}
-                  onClick={() => handleSort("desc")}
-                >
-                  Z-A
-                </Button>
+              <div style={{ marginBottom: "1em" }}>
+                <Row className="align-items-center">
+                  <Col xs="auto">
+                    <Button
+                      style={{
+                        backgroundColor: "#FFB6C1",
+                        color: "white",
+                        border: "none",
+                        padding: "0.5em 1em",
+                        borderRadius: "5px",
+                      }}
+                      onClick={handleShowAll}
+                    >
+                      Hiện tất cả
+                    </Button>
+                  </Col>
+                  <Col xs="auto">
+                    <Button
+                      style={{
+                        backgroundColor: "#FFB6C1",
+                        color: "white",
+                        border: "none",
+                        padding: "0.5em 1em",
+                        borderRadius: "5px",
+                      }}
+                      onClick={() => handleSort("asc")}
+                    >
+                      A-Z
+                    </Button>
+                  </Col>
+                  <Col xs="auto">
+                    <Button
+                      style={{
+                        backgroundColor: "#FFB6C1",
+                        color: "white",
+                        border: "none",
+                        padding: "0.5em 1em",
+                        borderRadius: "5px",
+                      }}
+                      onClick={() => handleSort("desc")}
+                    >
+                      Z-A
+                    </Button>
+                  </Col>
+                  <Col>
+                    <Form.Group controlId="formSearch">
+                      <Form.Control
+                        type="text"
+                        placeholder="Nhập tên sách để tìm kiếm"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{ width: "400px" }} // Set the width to 400px
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
               </div>
+
               {sortedCurrentBooks && sortedCurrentBooks.length > 0 ? (
                 <Container>
                   <Row xs={1} md={2} lg={4} className="g-4 mt-3">
