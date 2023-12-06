@@ -3,6 +3,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 
 import axios from "axios";
 import validator from "validator";
+import ReCAPTCHA from "react-google-recaptcha";
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -13,6 +14,10 @@ const Register = () => {
   const [errorMessageUsername, setErrorMessageUsername] = useState("");
   const [errorMessagePassword, setErrorMessagePassword] = useState("");
   const [errorMessageEmail, setErrorMessageEmail] = useState("");
+  const [captchaValue, setCaptchaValue] = useState("");
+  const handleCaptchaChange = (value) => {
+    setCaptchaValue(value);
+  };
   function sendRegisterRequest() {
     let hasError = false;
 
@@ -42,6 +47,10 @@ const Register = () => {
       // Ví dụ: hiển thị thông báo chung hoặc ngăn ngừa việc tiếp tục
       return; // hoặc có thể thực hiện hành động phù hợp khác
     }
+    if (!captchaValue) {
+      setErrorMessage("Please complete the CAPTCHA.");
+      return;
+    }
     const reqBody = {
       username: username,
       password: password,
@@ -53,6 +62,9 @@ const Register = () => {
       .then((response) => {
         if (response.status === 200) {
           setSuccessMessage("User registered successfully!");
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 3000);
         } else {
           setErrorMessage("Trùng Username.");
         }
@@ -113,6 +125,13 @@ const Register = () => {
                 {errorMessageEmail && (
                   <p className="text-danger">{errorMessageEmail}</p>
                 )}
+              </div>
+
+              <div className="mb-3">
+                <ReCAPTCHA
+                  sitekey="6LdRsSgpAAAAAIGY4c0_wxl6i1h4NWToPGDCpxe7"
+                  onChange={handleCaptchaChange}
+                />
               </div>
               <div>
                 {successMessage ? (
