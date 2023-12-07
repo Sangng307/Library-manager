@@ -124,6 +124,11 @@ const Book = () => {
     );
     setBook(filtered); // Update the 'book' state with filtered results
   }, [searchTerm, originalBook]);
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(0); // Set page number to 0 when initiating a search
+  };
   return (
     <>
       <Container>
@@ -307,7 +312,7 @@ const Book = () => {
                         type="text"
                         placeholder="Nhập tên sách để tìm kiếm"
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={handleSearch} // Call handleSearch on input change
                         style={{ width: "400px" }} // Set the width to 400px
                       />
                     </Form.Group>
@@ -343,7 +348,17 @@ const Book = () => {
                                 }}
                               />
                               <Card.Title style={{ flex: 1 }}>
-                                {bookItem.name}
+                                <p
+                                  style={{
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    display: "-webkit-box",
+                                    WebkitLineClamp: 1, // Limit to 2 lines
+                                    WebkitBoxOrient: "vertical",
+                                  }}
+                                >
+                                  {bookItem.name}
+                                </p>
                               </Card.Title>
                             </Link>
                             <Card.Subtitle
@@ -353,10 +368,27 @@ const Book = () => {
                               {bookItem.author}
                             </Card.Subtitle>
                             <div style={{ flex: 1 }}>
-                              <p>
+                              <p
+                                style={{
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                  display: "-webkit-box",
+                                  WebkitLineClamp: 1, // Limit to 2 lines
+                                  WebkitBoxOrient: "vertical",
+                                }}
+                              >
                                 <b>Thể loại:</b> {bookItem.category.name}
                               </p>
-                              <p>
+
+                              <p
+                                style={{
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                  display: "-webkit-box",
+                                  WebkitLineClamp: 2, // Limit to 2 lines
+                                  WebkitBoxOrient: "vertical",
+                                }}
+                              >
                                 <b>Mô tả:</b> {bookItem.description}
                               </p>
                             </div>
@@ -365,6 +397,7 @@ const Book = () => {
                                 <Button
                                   variant="Light"
                                   style={{
+                                    fontSize: "20px",
                                     width: "48%",
                                     backgroundColor: "#FFB6C1", // Set the background color here
                                     color: "white", // Ensure readable text by setting text color to white
@@ -422,7 +455,17 @@ const Book = () => {
                                 }}
                               />
                               <Card.Title style={{ flex: 1 }}>
-                                {bookItem.name}
+                                <p
+                                  style={{
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    display: "-webkit-box",
+                                    WebkitLineClamp: 1, // Limit to 2 lines
+                                    WebkitBoxOrient: "vertical",
+                                  }}
+                                >
+                                  {bookItem.name}
+                                </p>
                               </Card.Title>
                             </Link>
                             <Card.Subtitle
@@ -432,10 +475,27 @@ const Book = () => {
                               {bookItem.author}
                             </Card.Subtitle>
                             <div style={{ flex: 1 }}>
-                              <p>
+                              <p
+                                style={{
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                  display: "-webkit-box",
+                                  WebkitLineClamp: 1, // Limit to 2 lines
+                                  WebkitBoxOrient: "vertical",
+                                }}
+                              >
                                 <b>Thể loại:</b> {bookItem.category.name}
                               </p>
-                              <p>
+
+                              <p
+                                style={{
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                  display: "-webkit-box",
+                                  WebkitLineClamp: 2, // Limit to 2 lines
+                                  WebkitBoxOrient: "vertical",
+                                }}
+                              >
                                 <b>Mô tả:</b> {bookItem.description}
                               </p>
                             </div>
